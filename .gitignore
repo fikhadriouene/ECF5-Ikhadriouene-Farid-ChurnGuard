@@ -46,7 +46,7 @@ mlflow.db
 
 # Git
 .git/
-.github/
+
 
 # Notebook
 notebook/
