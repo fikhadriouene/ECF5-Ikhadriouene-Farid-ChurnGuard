@@ -1,0 +1,7 @@
+pandas
+
+mlflow
+fastapi
+uvicorn
+pydantic
+requests

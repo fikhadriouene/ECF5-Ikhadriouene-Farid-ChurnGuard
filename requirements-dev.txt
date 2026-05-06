@@ -1,0 +1,3 @@
+lpytest
+pytest-cov
+scikit-learn

@@ -1,0 +1,55 @@
+services:
+
+  mlflow:
+    image: python:3.11-slim
+
+    working_dir: /app
+
+    volumes:
+      - .:/app
+      - ./mlruns:/app/mlruns
+
+    command: >
+      sh -c "
+      pip install mlflow &&
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:///mlflow.db
+      --default-artifact-root ./mlruns
+      --allowed-hosts '*'
+      --cors-allowed-origins '*'
+      "
+
+    ports:
+      - "5000:5000"
+
+    networks:
+      - churnguard-network
+
+
+  api:
+    build: .
+    
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+    depends_on:
+      - mlflow
+
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - MODEL_URI=models:/churnguard@production
+
+    ports:
+      - "8000:8000"
+
+    networks:
+      - churnguard-network
+
+
+networks:
+  churnguard-network:
