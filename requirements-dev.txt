@@ -1,3 +1,4 @@
+-r requirements.txt
 lpytest
 pytest-cov
 scikit-learn
