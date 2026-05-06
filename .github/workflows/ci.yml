@@ -21,6 +21,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-dev.txt
 
+      - name: Télécharger les données
+        run: |
+          python scripts/download_data.py
+
       - name: Lancer les tests
         # run: pytest --cov=churnguard --cov-fail-under=70
         run: PYTHONPATH=. pytest --cov=churnguard --cov-fail-under=70
