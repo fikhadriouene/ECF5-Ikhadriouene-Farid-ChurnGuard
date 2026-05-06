@@ -55,9 +55,6 @@ notebook/
 .mypy_cache/
 .ruff_cache/
 
-# Docker
-Dockerfile
-docker-compose.yml
 
 # Logs
 *.log

@@ -1,0 +1,94 @@
+version: "3.9"
+
+services:
+
+  # mlflow:
+  #   image: ghcr.io/mlflow/mlflow:v2.13.0
+  #   ports:
+  #     - "5000:5000"
+  #   volumes:
+  #     - mlflow-data:/mlflow
+  #   command: >
+  #     mlflow server
+  #     --host 0.0.0.0
+  #     --port 5000
+  #     --backend-store-uri sqlite:///mlflow/mlflow.db
+  #     --default-artifact-root /mlflow/artifacts
+  #     --serve-artifacts
+  #   networks:
+  #     - churnguard-network
+
+
+  mlflow:
+    image: python:3.11-slim
+    ports:
+      - "5000:5000"
+    # volumes:
+    #   - mlflow-data:/mlflow
+
+    volumes:
+    - ./mlruns:/mlflow/artifacts
+    - ./mlflow_data:/mlflow
+
+    command: >
+      sh -c "
+      pip install mlflow==3.12.0 &&
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:////mlflow/mlflow.db
+      --default-artifact-root /mlflow/artifacts
+      --serve-artifacts
+      --allowed-hosts '*'
+      --cors-allowed-origins '*'
+      "
+    networks:
+      - churnguard-network
+
+  trainer:
+    build: .
+    # volumes:
+    #   - mlflow-data:/mlflow
+    volumes:
+      - ./mlruns:/mlflow/artifacts
+      - ./mlflow_data:/mlflow
+
+    command: python -m churnguard.train --model all --register
+    user: root
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+    depends_on:
+      - mlflow
+    networks:
+      - churnguard-network
+    restart: "no"
+
+  api:
+    build: .
+    user: root
+    ports:
+      - "8000:8000"
+    # volumes:
+    #   - mlflow-data:/mlflow
+
+    volumes:
+      - ./mlruns:/mlflow/artifacts
+      - ./mlflow_data:/mlflow
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - MODEL_URI=models:/churnguard@production
+    depends_on:
+      - mlflow
+    networks:
+      - churnguard-network
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  churnguard-network:
+
+# volumes:
+#   mlflow-data:
