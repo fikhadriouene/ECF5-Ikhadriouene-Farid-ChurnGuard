@@ -22,7 +22,8 @@ jobs:
           pip install -r requirements-dev.txt
 
       - name: Lancer les tests
-        run: pytest --cov=churnguard --cov-fail-under=70
+        # run: pytest --cov=churnguard --cov-fail-under=70
+        run : PYTHONPATH=. pytest --cov=churnguard --cov-fail-under=70
 
   build:
     runs-on: ubuntu-latest
