@@ -1,5 +1,8 @@
 # ChurnGuard MLOps — version cours
 
+[![CI](https://github.com/fikhadriouene/ECF5-Ikhadriouene-Farid-ChurnGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/fikhadriouene/ECF5-Ikhadriouene-Farid-ChurnGuard/actions/workflows/ci.yml)
+[![Release](https://github.com/fikhadriouene/ECF5-Ikhadriouene-Farid-ChurnGuard/actions/workflows/release.yml/badge.svg)](https://github.com/fikhadriouene/ECF5-Ikhadriouene-Farid-ChurnGuard/actions/workflows/release.yml)
+
 Projet ECF MLOps : industrialisation simple d'un modèle de prédiction de churn client.
 
 Cette version reste volontairement proche des notions vues en cours :
@@ -158,7 +161,7 @@ Healthcheck :
 
 ```bash
 curl http://127.0.0.1:8000/health
-
+```
 
 Réponse :
 
