@@ -164,7 +164,7 @@ curl http://127.0.0.1:8000/health
 ```
 
 Réponse :
-
+```bash
 StatusCode        : 200
 StatusDescription : OK
 Content           : {"status":"ok","model":"churnguard","version":"production"}
