@@ -9,16 +9,15 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
-# app = FastAPI(title="ChurnGuard API")
 
 MODEL_NAME = "churnguard"
-# MODEL_URI = os.getenv("MODEL_URI", "models:/churnguard/Production")
+
 MODEL_URI = os.getenv("MODEL_URI", "models:/churnguard@production")
 
 model: Any = None
 model_version = "production"
 
-
+# Schéma pydantic
 class Customer(BaseModel):
     """Données d'un client pour la prédiction."""
 
@@ -41,18 +40,6 @@ class Customer(BaseModel):
     PaymentMethod: str
     MonthlyCharges: float = Field(ge=0)
     TotalCharges: float = Field(ge=0)
-
-
-# @app.on_event("startup")
-# def load_model() -> None:
-#     """Charge le modèle MLflow au démarrage de l'API."""
-#     global model
-#     try:
-#         import mlflow.sklearn
-
-#         model = mlflow.sklearn.load_model(MODEL_URI)
-#     except Exception:
-#         model = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:

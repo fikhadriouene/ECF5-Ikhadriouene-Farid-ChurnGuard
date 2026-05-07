@@ -19,16 +19,97 @@ Les notions non vues en cours ne sont pas utilisées : pas de Poetry, pas de uv,
 ## Structure
 
 ```text
-churnguard/
-├── data.py        # chargement et préparation des données
-├── train.py       # entraînement + log MLflow
-└── evaluate.py    # calcul des métriques
-api/
-└── main.py        # API FastAPI
-tests/
-├── test_data.py
-├── test_train.py
-└── test_api.py
+ECF5-Ikhadriouene-Farid-ChurnGuard/
+│
+├── churnguard/                                 # Package principal MLOps
+│   │
+│   ├── __init__.py                             # Initialisation du package
+│   │
+│   ├── data.py                                 # Chargement et preprocessing des données
+│   │                                           # - load_data()
+│   │                                           # - preprocess()
+│   │
+│   ├── evaluate.py                             # Calcul des métriques ML
+│   │                                           # - accuracy
+│   │                                           # - precision
+│   │                                           # - recall
+│   │                                           # - f1-score
+│   │                                           # - roc_auc
+│   │
+│   └── train.py                                # Entraînement des modèles
+│                                               # Logging MLflow
+│                                               # Registry & promotion
+│
+├── api/                                        # API REST FastAPI
+│   │
+│   └── main.py                                 # Endpoints :
+│                                               # - GET /health
+│                                               # - POST /predict
+│                                               # - POST /predict/batch
+│
+├── scripts/                                    # Scripts utilitaires
+│   │
+│   └── download_data.py                        # Téléchargement automatique
+│                                               # du dataset Telco Churn
+│
+├── tests/                                      # Tests automatisés pytest
+│   │
+│   ├── test_api.py                             # Tests API FastAPI
+│   │
+│   ├── test_data.py                            # Tests preprocessing
+│   │                                           # et validation des données
+│   │
+│   └── test_train.py                           # Tests entraînement
+│                                               # et calcul des métriques
+│
+├── data/                                       # Données locales
+│   │
+│   ├── .gitkeep                                # Conservation du dossier vide
+│   │
+│   └── telco_churn.csv                         # Dataset téléchargé
+│                                               # automatiquement
+│
+├── notebook/                                   # Notebook initial fourni
+│   │
+│   └── exploration.ipynb                       # Notebook de départ
+│                                               # de la data scientist
+│
+├── mlruns/                                     # Artefacts MLflow
+│   │
+│   ├── experiments/                            # Expérimentations ML
+│   ├── metrics/                                # Métriques enregistrées
+│   ├── models/                                 # Modèles versionnés
+│   └── artifacts/                              # Artefacts MLflow
+│
+├── .github/                                    # GitHub Actions
+│   │
+│   └── workflows/
+│       │
+│       ├── ci.yml                              # Pipeline CI :
+│       │                                       # tests + coverage + build
+│       │
+│       └── release.yml                         # Pipeline CD :
+│                                               # build + push GHCR
+│
+├── Dockerfile                                  # Image Docker multi-stage
+│
+├── docker-compose.yml                          # Stack complète :
+│                                               # MLflow + API + trainer
+│
+├── requirements.txt                            # Dépendances runtime
+│
+├── requirements-dev.txt                        # Dépendances dev/tests
+│
+├── .dockerignore                               # Optimisation du build Docker
+│
+├── .gitignore                                  # Exclusions Git
+│
+├── README.md                                   # Documentation du projet
+│
+├── sujet.md                                    # Sujet officiel ECF
+│
+└── pyproject.toml                              # Configuration Python/outillage
+
 ```
 
 ## Installation locale avec venv
@@ -132,6 +213,4 @@ churnguard.data -> churnguard.train -> MLflow Tracking / Registry
                                     Réponse JSON churn
 ```
 
-## Justification pédagogique
 
-Le sujet mentionne aussi Poetry/uv, Ruff, mypy, pre-commit, Trivy et GHCR. Ces outils sont utiles en entreprise, mais cette version les remplace par des outils vus en cours afin de produire une solution simple, compréhensible et défendable à l'oral.

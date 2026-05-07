@@ -26,7 +26,6 @@ jobs:
           python scripts/download_data.py
 
       - name: Lancer les tests
-        # run: pytest --cov=churnguard --cov-fail-under=70
         run: PYTHONPATH=. pytest --cov=churnguard --cov-fail-under=70
 
   build:
