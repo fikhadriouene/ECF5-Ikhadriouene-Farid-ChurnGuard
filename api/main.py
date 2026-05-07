@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 
 
 MODEL_NAME = "churnguard"
-MODEL_URI = os.getenv("MODEL_URI", "models:/churnguard@production")
+MODEL_URI = os.getenv("MODEL_URI", "models:/churnguard/production")
 
 model: Any = None
 model_version = "production"

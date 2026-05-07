@@ -44,6 +44,9 @@ COPY --from=builder /opt/venv /opt/venv
 # Copie du code source
 COPY . .
 
+# Télécharger les données
+RUN python scripts/download_data.py
+
 # Création d'un utilisateur non-root
 RUN useradd -m appuser
 
@@ -52,9 +55,6 @@ USER appuser
 
 # Exposition du port FastAPI
 EXPOSE 8000
-
-# Télécharger les données
-RUN python scripts/download_data.py
 
 # Healthcheck Docker
 HEALTHCHECK CMD curl --fail http://localhost:8000/health || exit 1
