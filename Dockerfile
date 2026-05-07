@@ -53,6 +53,9 @@ USER appuser
 # Exposition du port FastAPI
 EXPOSE 8000
 
+# Télécharger les données
+RUN python scripts/download_data.py
+
 # Healthcheck Docker
 HEALTHCHECK CMD curl --fail http://localhost:8000/health || exit 1
 
