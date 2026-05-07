@@ -47,7 +47,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
-      
+
     networks:
       - churnguard-network
  
@@ -85,7 +85,9 @@ services:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
       - MODEL_URI=models:/churnguard@production
     depends_on:
-      - mlflow
+      # - mlflow
+      mlflow:
+        condition: service_healthy
     networks:
       - churnguard-network
     healthcheck:
